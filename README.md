@@ -1,1 +1,202 @@
 # proyect-the-eco-bus
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>donation site for our eco bus school(LENOX) proyect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        .donor-list {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none; /* 기부자 명단 기본적으로 숨김 */
+        }
+
+        .donor-list p {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .thank-you-message {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f7e7;
+            border-radius: 4px;
+            font-size: 18px;
+            color: #4CAF50;
+            display: none; /* 처음에는 보이지 않도록 */
+        }
+
+        .footer-link {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>DONATION for our School(Lenox) eco bus company proyect</h1>
+        <p>If you donate 1 dallors now,Earth will be better 10 years</p>
+        <form id="donationForm">
+            <label for="name">name</label>
+            <input type="text" id="name" name="name" placeholder="Write your name here" required>
+
+            <label for="amount">how much ($)</label>
+            <input type="number" id="amount" name="amount" placeholder="Write here how much will you donate" required>
+
+            <input type="submit" value="donate">
+        </form>
+
+        <!-- 기부자 명단 보기 버튼 -->
+        <button id="viewDonorListBtn">See the list of contributor</button>
+
+        <!-- 기부자 명단 -->
+        <div id="donorList" class="donor-list">
+            <h3>List of contributor</h3>
+            <div id="donors"></div>
+        </div>
+
+        <!-- 감사 메시지 -->
+        <div id="thankYouMessage" class="thank-you-message">
+            <p>Thanks for your donation!</p>
+            <p id="donationAmount"></p>
+        </div>
+
+        <div class="footer">
+            <p>Your money will use for make better world.</p>
+        </div>
+
+        <!-- 파일 링크 -->
+        <div class="footer-link">
+           
+
+        <!-- 외부 링크 (GitHub 페이지 예시) -->
+        <div class="footer-link">
+            <a href="https://bookish-guide-wrp6vjwrw7xc95j9.github.dev/" target="_blank">Link to see our information</a>
+        </div>
+    </div>
+
+    <script>
+        // 기부자 목록을 저장할 배열
+        const donors = [];
+
+        // 폼 제출 이벤트 리스너
+        document.getElementById("donationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 폼 제출 기본 동작 막기
+
+            // 입력된 이름과 금액 가져오기
+            var name = document.getElementById("name").value;
+            var amount = document.getElementById("amount").value;
+
+            // 기부자 목록에 새로운 기부자 추가
+            donors.push({ name: name, amount: amount });
+
+            // 기부자 목록 갱신
+            updateDonorList();
+
+            // 기부 감사 메시지 표시
+            displayThankYouMessage(amount);
+        });
+
+        // 기부자 목록을 화면에 표시하는 함수
+        function updateDonorList() {
+            const donorListDiv = document.getElementById("donors");
+            donorListDiv.innerHTML = ""; // 기존 목록 비우기
+
+            // 모든 기부자 정보를 목록에 추가
+            donors.forEach(donor => {
+                const donorItem = document.createElement("p");
+                donorItem.textContent = donor.name + " : " + donor.amount + "$";
+                donorListDiv.appendChild(donorItem);
+            });
+        }
+
+        // 기부 감사 메시지를 표시하는 함수
+        function displayThankYouMessage(amount) {
+            const thankYouMessage = document.getElementById("thankYouMessage");
+            const donationAmount = document.getElementById("donationAmount");
+            
+            // 기부금액 표시
+            donationAmount.textContent = "How much: ₩" + amount;
+
+            // 메시지 표시
+            thankYouMessage.style.display = "block"; // 감사 메시지 표시
+        }
+
+        // "기부자 명단 보기" 버튼 클릭 시 기부자 명단 토글
+        document.getElementById("viewDonorListBtn").addEventListener("click", function() {
+            const donorList = document.getElementById("donorList");
+            if (donorList.style.display === "none" || donorList.style.display === "") {
+                donorList.style.display = "block"; // 기부자 명단 보이기
+            } else {
+                donorList.style.display = "none"; // 기부자 명단 숨기기
+            }
+        });
+    </script>
+
+</body>
+</html>
