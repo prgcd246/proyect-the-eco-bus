@@ -100,7 +100,7 @@
 
     <div class="container">
         <h1>DONATION for our School(Lenox) eco bus company proyect</h1>
-        <p>If you donate 1 dallors now,Earth will be better 10 years</p>
+        <p>If you donate 1 dollars now,Earth will be better 10 in years</p>
         <form id="donationForm">
             <label for="name">name</label>
             <input type="text" id="name" name="name" placeholder="Write your name here" required>
